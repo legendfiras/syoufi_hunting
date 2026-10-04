@@ -4,8 +4,9 @@ import type { ReactNode } from "react";
 import { business } from "@/content/business";
 import { dirFor, isLocale, locales, type Locale } from "@/i18n";
 import { siteContent } from "@/content/site";
+import { Container } from "@/components/Container";
+import { Hero } from "@/components/Hero";
 import { logoAlt } from "@/components/Logo";
-import { SiteChrome } from "@/components/SiteChrome";
 
 type LocaleLayoutProps = {
   children: ReactNode;
@@ -68,12 +69,31 @@ export async function generateMetadata({
   };
 }
 
-export default async function LocaleLayout({ children, params }: LocaleLayoutProps) {
+export default async function LocaleLayout({ params }: LocaleLayoutProps) {
   const { locale } = await params;
   if (!isLocale(locale)) notFound();
+
   return (
-    <div lang={locale} dir={dirFor(locale)}>
-      <SiteChrome locale={locale}>{children}</SiteChrome>
+    <div lang={locale} dir={dirFor(locale)} className="min-h-screen bg-ivory">
+      <main>
+        <Hero locale={locale} />
+        <section className="bg-forest-deep text-cream" aria-labelledby="coming-soon-heading">
+          <Container className="flex min-h-52 flex-col items-center justify-center gap-5 py-14 text-center md:min-h-64 md:py-20">
+            <h1
+              id="coming-soon-heading"
+              className="text-4xl font-semibold uppercase tracking-[0.18em] text-gold md:text-6xl rtl:normal-case rtl:tracking-normal"
+            >
+              {locale === "ar" ? "قريبًا" : "Coming Soon"}
+            </h1>
+            <a
+              href="https://roytech.solutions"
+              className="text-xs font-medium text-gold transition-colors hover:text-gold-bright"
+            >
+              Back to Roytech
+            </a>
+          </Container>
+        </section>
+      </main>
     </div>
   );
 }
