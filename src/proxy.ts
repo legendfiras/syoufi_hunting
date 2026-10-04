@@ -5,6 +5,12 @@ import { defaultLocale, isLocale } from "@/i18n";
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
+  if (pathname === "/ar" || pathname.startsWith("/ar/")) {
+    const url = request.nextUrl.clone();
+    url.pathname = `/en${pathname.slice(3)}`;
+    return NextResponse.redirect(url);
+  }
+
   if (pathname === "/") {
     const url = request.nextUrl.clone();
     url.pathname = `/${defaultLocale}`;
